@@ -58,7 +58,7 @@ function isString(value) {
  *   concatenateStrings('', 'bb') => 'bb'
  */
 function concatenateStrings(value1, value2) {
-  return value1 + value2;
+  return value1.concat(value2);
 }
 
 /**
@@ -73,8 +73,7 @@ function concatenateStrings(value1, value2) {
  *   getFirstChar('') => ''
  */
 function getFirstChar(value) {
-  if (value === '') return value;
-  return value[0];
+  return value.charAt(0);
 }
 
 /**
@@ -153,7 +152,13 @@ function repeatString(str, times) {
  *   removeFirstOccurrences('ABABAB', 'BA') => 'ABAB'.
  */
 function removeFirstOccurrences(str, value) {
-  return str.replace(value, '');
+  const substrIndex = str.indexOf(value);
+  if (substrIndex < 0) return str;
+
+  const charArr = str.split('');
+  charArr.splice(substrIndex, value.length);
+
+  return charArr.join('');
 }
 
 /**
@@ -190,10 +195,12 @@ function removeLastOccurrences(str, value) {
  *   sumOfCodes() => 0
  */
 function sumOfCodes(str) {
+  if (!str) return 0;
+
   return str
     .split('')
     .map((char) => char.charCodeAt(0))
-    .reduce((summ, code) => summ + code);
+    .reduce((summ, code) => summ + code, 0);
 }
 
 /**
@@ -240,7 +247,7 @@ function endsWith(str, substr) {
  *   formatTime(0, 0) => "00:00"
  */
 function formatTime(minutes, seconds) {
-  return `${String(minutes).padStart(2, '0')}:${String(seconds).padEnd(
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(
     2,
     '0'
   )}`;
@@ -337,9 +344,9 @@ function countVowels(str) {
  *   isPalindrome('No lemon, no melon') => true
  */
 function isPalindrome(str) {
-  const preparedString = str.toLowerCase().replaceAll(' ', '');
+  const preparedString = str.toLowerCase().replaceAll(/[ !?,]/g, '');
 
-  return preparedString === reverseString(preparedString);
+  return preparedString === preparedString.split('').reverse().join('');
 }
 
 /**
